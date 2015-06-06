@@ -11,15 +11,16 @@ selectedPower <- subset(power, Date == "1/2/2007" | Date == "2/2/2007")
 # removing the dataset in order to free memory 
 remove(power)
 
-# convert the date variable to Date class 
+# convert the date variable to Date class, create a new date+time variable of Time class  
 selectedPower[,1] <- as.Date(selectedPower[,1],"%d/%m/%Y")
+selectedPower$New_Date <- with(selectedPower, as.POSIXct(paste(Date, Time), format="%Y-%m-%d %H:%M:%S"))
 
 # open png for plotting
-png("plot1.png")
+png("plot2.png")
 
-# plotting first graph in a PNG format - size 480x480 is default value of width and height
-# frequency histogram of Global_active_power variable, color = red
-with(selectedPower, hist(Global_active_power, xlab = "Global Active Power (kilowatts)", main = "Global Active Power", col="red"))
+# plotting second graph in a PNG format - size 480x480 is default value of width and height
+# line plot of Date/Time x Global_active_power
+with(selectedPower, plot(New_Date, Global_active_power, type="l", xlab = "", ylab = "Global Active Power (kilowatts)"))
 
-# close device (and save plot to png file)
+# close device (and save plot in png file)
 dev.off()
